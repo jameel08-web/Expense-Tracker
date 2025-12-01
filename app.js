@@ -14,11 +14,11 @@ function loadDashboard() {
 // -- Open form
 var form = document.getElementById("Addexpense")
 form.addEventListener('click',
-function () {
-    console.log("Me chala")
-    document.getElementById("form").style.display = "block"
-    document.getElementById("Addexpense").style.display = "none"
-}
+    function () {
+        console.log("Me chala")
+        document.getElementById("form").style.display = "block"
+        document.getElementById("Addexpense").style.display = "none"
+    }
 )
 // -- ADD / UPDATE EXPENSE
 function addition() {
@@ -38,6 +38,11 @@ function addition() {
     let email = localStorage.getItem("currentuser");
     let user = users.find(u => u.email === email)
 
+
+    if (!isEdit) {
+        document.getElementById("thead").style.display = "block";
+    }
+
     if (editId !== null) {
         let exp = user.expenses.find(e => e.id == editId);
         exp.title = title;
@@ -49,8 +54,8 @@ function addition() {
         renderExpenses();
         updateSummary();
 
-        title.value = "";
-        amount.value = " ";
+        document.getElementById("Description").value = "";
+        document.getElementById("Amount").value = "";
 
         Swal.fire({
             icon: 'success',
@@ -86,8 +91,8 @@ function editExpense(id) {
 
     let exp = user.expenses.find(e => e.id === id);
 
-    expTitle.value = exp.title;
-    expAmount.value = exp.amount;
+    document.getElementById("Description").value = "";
+    document.getElementById("Amount").value = "";
 
     editId = id;
 }
@@ -116,6 +121,13 @@ function renderExpenses() {
     let list = document.getElementById("expList");
     list.innerHTML = "";
 
+    if (user.expenses.length > 0) {
+        thead.classList.remove("d-none");
+    } else {
+        thead.classList.add("d-none");
+    }
+
+
     user.expenses.forEach(exp => {
         list.innerHTML += `
         <tr>
@@ -127,7 +139,7 @@ function renderExpenses() {
     });
 
     // ------ Logout -----
-    document.querySelector(".logout").addEventListener("click", function(){
+    document.querySelector(".logout").addEventListener("click", function () {
         localStorage.removeItem("currentUser");
         location.href = "../SignUp/Signup.html";
     })
