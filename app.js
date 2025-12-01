@@ -92,7 +92,7 @@ function editExpense(id) {
     editId = id;
 }
 
-
+// --------------- Delete ---------------
 function deleteExpense(id) {
     let users = JSON.parse(localStorage.getItem("users"))
     let email = localStorage.getItem("currentUser")
@@ -113,7 +113,24 @@ function renderExpenses() {
     let email = localStorage.getItem("currentUser")
 
     let user = users.find(u => u.email === email);
+    let list = document.getElementById("expList");
+    list.innerHTML = "";
 
+    user.expenses.forEach(exp => {
+        list.innerHTML += `
+        <tr>
+        <td>${exp.title}</td>
+        <td>${exp.amount}</td>
+        <td><button onclick="deleteExpense(${exp.id})">Delete</button></td>
+        </tr>
+        `;
+    });
+
+    // ------ Logout -----
+    document.querySelector(".logout").addEventListener("click", function(){
+        localStorage.removeItem("currentUser");
+        location.href = "../SignUp/Signup.html";
+    })
 
 
 }

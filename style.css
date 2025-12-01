@@ -24,7 +24,7 @@ body {
     display: none;
 }
 
-.head {
+/* .head {
     display: none;
     justify-content: space-between;
     gap: 30px;
@@ -34,7 +34,7 @@ body {
     border-radius: 8px;
     text-align: center;
     font-weight: bold;
-}
+} */
 
 .line {
     display: flex;
@@ -101,12 +101,12 @@ button {
     font-size: 20px;
     
 }
-.line>p,
+/* .line>p,
 .head>p {
     width: 30%;
     text-align: center;
 
-}
+} */
 
 .activity {
     display: flex;
@@ -126,3 +126,19 @@ button .link {
     text-decoration: none;
     color: white;
 }
+
+table{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+th, td{
+    border: 1px solid #ddd;
+    padding: 8px; 
+    text-align: center; 
+}
+th{
+    background: #000;
+    color: #fff;
+}
+

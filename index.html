@@ -26,11 +26,11 @@
             </div>
 
             <div class="activity row p-4">
-                <div class="income col-12 col-sm-6 col-md-6 col-lg-2">
+                <div class="income col-12 col-sm-12 col-md-12 col-lg-2">
                     <h6>Income</h6>
                     <h6 id="income">0</h6>
                 </div>
-                <div class="Expense col-12 col-sm-12 col-md-6 col-lg-2">
+                <div class="Expense col-12 col-sm-12 col-md-12 col-lg-2">
                     <h6>Expense</h6>
                     <h6 id="expense">0</h6>
                 </div>
@@ -39,7 +39,7 @@
             <button id="Addexpense">Add your Expense</button>
 
             <div class="form " id="form">
-                    <form class="row">
+                <form class="row">
                     <div class="col-auto">
                         <label for="Description">Description</label><br>
                         <input type="text" id="Description" name="Description" placeholder="Enter Description"><br> <br>
@@ -48,25 +48,30 @@
                         <label for="Amount">Amount</label><br>
                         <input type="number" id="Amount" name="Amount" placeholder="Enter Amount"><br>
                     </div>
-    
+
                 </form>
                 <button type="button" onclick="addition()">Add Transaction</button><br><br>
 
-
-
-
-
-
-
-
-
                 <div id="history">
-                    <div class="head" id="head">
+                    <table>
+                        <thead class="d-none" id="thead">
+                            <tr>
+                                <th>Title</th>
+                                <th>Amount</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="expList"></tbody>
+                    </table>
+                    <button class="logout mt-5">Logout</button>
+
+
+                    <!-- <div class="head" id="head">
                         <p class="des">Date</p>
                         <p>Description</p>
                         <p>Amount</p>
 
-                    </div>
+                    </div> -->
 
                 </div>
             </div>
