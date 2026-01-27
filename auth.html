@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <div class="flex border-b mb-6">
+            <button id="loginTab"
+                class="w-1/2 py-2 text-center font-semibold border-b-2 border-blue-500 text-blue-600 transition">Login</button>
+            <button id="regTab"
+                class="w-1/2 py-2 text-center font-semibold border-b-2 border-transparent text-gray-500 hover:text-blue-500 transition">Register</button>
+        </div>
+
+        <div id="loginForm" class="space-y-4">
+            <h2 class="text-2xl font-bold text-gray-800">Welcome Back</h2>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" id="loginEmail"
+                    class="w-full px-4 py-2 mt-1 border rounded-md focus:ring-2 focus:ring-blue-400 outline-none"
+                    placeholder="you@example.com" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Password</label>
+                <input type="password" id="loginPassword"
+                    class="w-full px-4 py-2 mt-1 border rounded-md focus:ring-2 focus:ring-blue-400 outline-none"
+                    placeholder="••••••••" required>
+            </div>
+            <button id="loginuser"
+                class="w-full bg-[#835fff] text-white py-2 rounded-md hover:bg-[#7a58e0] transition">Login</button>
+            <p class="text-center">or</p>
+          <button id="googlelogin"
+                class="w-full flex items-center justify-center bg-[#FFFFFF] border border-[#DADCE0] text-[#3C4043] py-2 rounded-md font-medium shadow-sm hover:bg-[#F8F9FA] transition"><img
+                    src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+                    class="w-5 h-5 mr-3" alt="Google Logo">Login With Google</button>
+        </div>
+
+        <div id="regForm" class="space-y-4 hidden">
+            <h2 class="text-2xl font-bold text-gray-800">Create Account</h2>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Full Name</label>
+                <input type="text" id="regName"
+                    class="w-full px-4 py-2 mt-1 border rounded-md focus:ring-2 focus:ring-blue-400 outline-none"
+                    placeholder="John Doe" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" id="regEmail"
+                    class="w-full px-4 py-2 mt-1 border rounded-md focus:ring-2 focus:ring-blue-400 outline-none"
+                    placeholder="you@example.com" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Password</label>
+                <input type="password" id="regPassword"
+                    class="w-full px-4 py-2 mt-1 border rounded-md focus:ring-2 focus:ring-blue-400 outline-none"
+                    placeholder="••••••••" required>
+            </div>
+            <button id="createuser"class="w-full bg-[#1A73E8] text-white py-2 rounded-md font-medium hover:bg-[#1557B0] transition mb-4">Register</button>
+            <p class="text-center">or</p>
+            <button id="googlesignup" class="w-full flex items-center justify-center bg-[#FFFFFF] border border-[#DADCE0] text-[#3C4043] py-2 rounded-md font-medium shadow-sm hover:bg-[#F8F9FA] transition 
+            "><img
+                    src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+                    class="w-5 h-5 mr-3" alt="Google Logo">Register With Google</button>
+        </div>
+    </div>
+
+    <script src="config.js" type="module"></script>
+    <script src="auth.js" type="module"></script>
+</body>
+
+</html>

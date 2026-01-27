@@ -4,91 +4,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+    <title>Finance Tracker | Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
-<body>
-    <div class="container">
-        <div class="main">
+<body class="bg-gray-100 font-sans">
 
-            <div class="header">
-                <h1>Expense Tracker</h1>
+    <nav class="bg-slate-800 text-white p-4 shadow-lg flex justify-between items-center px-8">
+        <h1 class="text-2xl font-bold tracking-tight">Finance <span class="text-blue-400">Manager</span></h1>
+        <div class="flex items-center gap-4">
+            <span id="userNameDisplay" class="font-medium border-r pr-4 border-gray-500">User Name</span>
+            <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg text-sm transition-all">
+                <i class="fa-solid fa-right-from-bracket mr-2"></i> Logout
+            </button>
+        </div>
+    </nav>
 
-            </div>
+    <div class="max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-            <div class="balance row">
-                <div class="col-12 col-sm-12 col-md-12 col-12">
-                    <h5>Your Balance</h5>
-                    <h3 id="balance"></h3>
-                </div>
-            </div>
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-2xl shadow-md p-6 border-t-4 border-blue-500">
+                <h3 class="text-xl font-bold mb-6 text-gray-700 underline decoration-blue-200 underline-offset-8">Add
+                    Transaction</h3>
 
-            <div class="activity row p-4">
-                <div class="income col-12 col-sm-12 col-md-12 col-lg-2">
-                    <h6>Income</h6>
-                    <h6 id="income">0</h6>
-                </div>
-                <div class="Expense col-12 col-sm-12 col-md-12 col-lg-2">
-                    <h6>Expense</h6>
-                    <h6 id="expense">0</h6>
-                </div>
-            </div>
-
-            <button id="Addexpense">Add your Expense</button>
-
-            <div class="form " id="form">
-                <form class="row">
-                    <div class="col-auto">
-                        <label for="Description">Description</label><br>
-                        <input type="text" id="Description" name="Description" placeholder="Enter Description"><br> <br>
-                    </div>
-                    <div class="col-auto">
-                        <label for="Amount">Amount</label><br>
-                        <input type="number" id="Amount" name="Amount" placeholder="Enter Amount"><br>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-600 mb-1">Entry Type</label>
+                        <select id="transType"
+                            class="w-full p-3 border rounded-xl bg-gray-50 focus:ring-2 focus:ring-blue-400 outline-none">
+                            <option value="income">Income</option>
+                            <option value="expense">Expense</option>
+                        </select>
                     </div>
 
-                </form>
-                <button type="button" onclick="addition()">Add Transaction</button><br><br>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-600 mb-1">Item Description</label>
+                        <input type="text" id="transName" placeholder="item Description"
+                            class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-400 outline-none">
+                    </div>
 
-                <div id="history">
-                    <table>
-                        <thead class="d-none" id="thead">
-                            <tr>
-                                <th>Title</th>
-                                <th>Amount</th>
-                                <th>Actions</th>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-600 mb-1">Amount</label>
+                        <input type="number" id="transAmount" placeholder="0.00"
+                            class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-400 outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-600 mb-1">Date</label>
+                        <input type="date" id="transDate"
+                            class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-400 outline-none">
+                    </div>
+
+                    <button id="addTransBtn"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow-lg transition-transform transform active:scale-95">
+                        <i class="fa-solid fa-plus mr-2"></i> Add Transaction
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-2 space-y-6">
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-green-100 border-l-8 border-green-500 p-5 rounded-xl shadow-sm">
+                    <p class="text-sm text-green-700 font-bold uppercase tracking-wider">Total Income</p>
+                    <h2 class="text-2xl font-black text-green-800">Rs. <span id="totalIncome">0</span></h2>
+                </div>
+                <div class="bg-red-100 border-l-8 border-red-500 p-5 rounded-xl shadow-sm">
+                    <p class="text-sm text-red-700 font-bold uppercase tracking-wider">Total Expense</p>
+                    <h2 class="text-2xl font-black text-red-800">Rs. <span id="totalExpense">0</span></h2>
+                </div>
+                <div class="bg-blue-100 border-l-8 border-blue-500 p-5 rounded-xl shadow-sm">
+                    <p class="text-sm text-blue-700 font-bold uppercase tracking-wider">Net Balance</p>
+                    <h2 class="text-2xl font-black text-blue-800">Rs. <span id="totalBalance">0</span></h2>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200">
+                <div class="p-5 bg-gray-50 border-b flex justify-between items-center">
+                    <h3 class="font-bold text-gray-700"><i class="fa-solid fa-list-ul mr-2 text-blue-500"></i> Recent
+                        History</h3>
+                    <input type="text" placeholder="Filter records..."
+                        class="text-sm p-2 border rounded-lg outline-none focus:ring-1 focus:ring-blue-300">
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-100 text-gray-600 text-sm uppercase">
+                                <th class="p-4 border-b text-center">Item</th>
+                                <th class="p-4 border-b text-center">Date</th>
+                                <th class="p-4 border-b text-right">Amount</th>
+                                <th class="p-4 border-b text-center">Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="expList"></tbody>
+
+                        <tbody id="transactionList" class="divide-y divide-gray-100 text-gray-700">                            
+                        </tbody>
                     </table>
-                    <button class="logout mt-5">Logout</button>
-
-
-                    <!-- <div class="head" id="head">
-                        <p class="des">Date</p>
-                        <p>Description</p>
-                        <p>Amount</p>
-
-                    </div> -->
-
                 </div>
             </div>
-
-
-
-
-
-
         </div>
     </div>
 
-
-    <script src="app.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 </body>
 
+<script src="config.js" type="module"></script>
+<script src="dahsboard.js" type="module"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script
 </html>
