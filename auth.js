@@ -57,7 +57,7 @@ regButton.addEventListener('click', async () => {
                 name: regName,
                 email: regEmail,
                 password: regPassword,
-                expenses: []
+                Transcation: []
             });
 
 
