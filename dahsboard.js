@@ -1,13 +1,19 @@
 // import { collection, getDocs } from "firebase/firestore"; 
-// import { db } from "./config.js";
+import { db } from "./config.js";
+import { getDoc, doc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 const userUid = localStorage.getItem("userUid");
 
 if (!userUid) {
     location.href = "auth.html";
 }
 
-const data = await getDoc(doc(db, "user", userUid))
-console.log("data ==>", data)
+const userRef = doc(db, "user", userUid)
+const data = await getDoc(userRef);
+// const myArray = data.data()
+let transcation = data.data()?.transcation || [];
+// console.log("data ==>", data)
+// console.log("trans ==>", trans)
+
 
 const addTransBtn = document.getElementById("addTransBtn")
 const transType = document.getElementById("transType")
@@ -15,7 +21,7 @@ const description = document.getElementById("transName")
 const amount = document.getElementById("transAmount")
 const date = document.getElementById("transDate")
 let editId = null;
-const transcation = [];
+
 
 
 const updateUi = () => {
@@ -26,7 +32,7 @@ const updateUi = () => {
     }
 }
 
-addTransBtn.addEventListener('click', () => {
+addTransBtn.addEventListener('click', async () => {
     if (!description.value || !amount.value) {
         Swal.fire({
             icon: 'warning',
@@ -37,7 +43,6 @@ addTransBtn.addEventListener('click', () => {
     }
 
     const totalBalance = document.getElementById("totalBalance");
-
     if (transType.value.toLowerCase() === "expense" && totalBalance.innerText < amount.value) {
         Swal.fire({
             icon: 'error',
@@ -52,28 +57,34 @@ addTransBtn.addEventListener('click', () => {
         des: description.value,
         val: Number(amount.value),
         transdate: date.value
-    }
-
+    };
 
     if (editId !== null) {
         transcation[editId] = transactionData;
         editId = null;
-    }else{
+    } else {
         transcation.push(transactionData);
     }
 
+
     console.log("Current Array:", transcation);
 
-    updateUi()
-    updatesummary()
-    renderExpense()
+    updateUi();
+    updatesummary();
+    renderExpense();
 
-        transType.value = "",
-        description.value = "",
-        amount.value = "",
-        date.value = ""
+    transType.value = "";
+    description.value = "";
+    amount.value = "";
+    date.value = "";
 
-})
+    try {
+        await updateDoc(userRef, { transcation: arrayUnion(transactionData) });
+    } catch (error) {
+        console.error("Firebase Error:", error);
+        Swal.fire({ icon: 'error', title: 'Sync Error', text: 'Database update fail ho gaya!' });
+    }
+});
 
 const updatesummary = () => {
     const totalIncome = document.getElementById("totalIncome");
