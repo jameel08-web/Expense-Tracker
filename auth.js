@@ -1,4 +1,4 @@
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, GoogleAuthProvider, signInWithPopup} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 import { setDoc, doc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 import { app, db } from "./config.js";
 const auth = getAuth(app);
@@ -57,7 +57,7 @@ regButton.addEventListener('click', async () => {
                 name: regName,
                 email: regEmail,
                 password: regPassword,
-                expenses: []
+                transcation: []
             });
 
 
@@ -89,7 +89,7 @@ const handleGoogleSignup = () => {
             await setDoc(doc(db, "user", userUid), {
                 name: user.displayName,
                 email: user.email,
-                expenses: []
+                transcation: []
             });
             alert("Registration Successful");
             localStorage.setItem("userUid", userUid);
@@ -102,7 +102,7 @@ const handleGoogleSignup = () => {
             const credential = GoogleAuthProvider.credentialFromError(error);
             alert(error.message);
         });
-        userprofile()
+    userprofile()
 }
 
 const handleGoogleLogin = () => {
@@ -130,8 +130,8 @@ loginButton.addEventListener('click', () => {
 
             alert("Login Successful");
             location.href = "index.html";
-            localStorage.setItem("userUid", user.uid);
-            console.log("User UID stored in localStorage:", user.uid);
+             localStorage.setItem("userUid", userUid);
+            location.href = "index.html";
         })
         .catch((error) => {
             const errorCode = error.code;

@@ -1,13 +1,16 @@
 // import { collection, getDocs } from "firebase/firestore"; 
-// import { db } from "./config.js";
+import { db } from "./config.js";
+import { getDoc, doc, updateDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 const userUid = localStorage.getItem("userUid");
 
 if (!userUid) {
     location.href = "auth.html";
 }
 
-const data = await getDoc(doc(db, "user", userUid))
-console.log("data ==>", data)
+const docRef = doc(db, "user", userUid)
+const docSnap = await getDoc(docRef)
+let transcation = docSnap.data().transcation;
+console.log("data ==>", transcation)
 
 const addTransBtn = document.getElementById("addTransBtn")
 const transType = document.getElementById("transType")
@@ -15,7 +18,6 @@ const description = document.getElementById("transName")
 const amount = document.getElementById("transAmount")
 const date = document.getElementById("transDate")
 let editId = null;
-const transcation = [];
 
 
 const updateUi = () => {
@@ -24,6 +26,37 @@ const updateUi = () => {
     } else {
         addTransBtn.innerHTML = "<i class='fa-solid fa-plus mr-2'></i> Add Transaction";
     }
+}
+
+const init = async () => {
+    try { // Try block shuru
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) { // exists() sahi spelling hai
+            // Yahan 'const' nahi likhna, warna ye bahar nahi jayega
+            transcation = docSnap.data().transcation || [];
+
+            updatesummary();
+            renderExpense();
+
+            console.log("Database connected and UI updated!");
+        }
+    } catch (error) { // Catch block
+        console.error("Initialization error:", error); // console small letters mein
+    }
+}
+
+const updateFirebase = async (userUid, newObj) => {
+
+    try {
+        await updateDoc(userUid, {
+            transcation: arrayUnion(newObj)
+        });
+    } catch (error) {
+        console.error("Error:", error);
+    }
+
+
 }
 
 addTransBtn.addEventListener('click', () => {
@@ -37,8 +70,11 @@ addTransBtn.addEventListener('click', () => {
     }
 
     const totalBalance = document.getElementById("totalBalance");
+    const inputAmount = Number(amount.value)
+    const currentBalance = Number(totalBalance.innerText);
 
-    if (transType.value.toLowerCase() === "expense" && totalBalance.innerText < amount.value) {
+
+    if (transType.value.toLowerCase() === "expense" && currentBalance.innerText < inputAmount) {
         Swal.fire({
             icon: 'error',
             title: 'Insufficient Balance',
@@ -57,8 +93,19 @@ addTransBtn.addEventListener('click', () => {
 
     if (editId !== null) {
         transcation[editId] = transactionData;
-        editId = null;
-    }else{
+
+
+        try {
+            updateDoc(docRef, {
+                transcation: transcation
+            });
+            console.log("Database mein edit save ho gaya!");
+            editId = null; // Kaam khatam, reset kar dein
+        } catch (error) {
+            console.error("Update Error:", error);
+        }
+    } else {
+        updateFirebase(docRef, transactionData);
         transcation.push(transactionData);
     }
 
@@ -68,7 +115,7 @@ addTransBtn.addEventListener('click', () => {
     updatesummary()
     renderExpense()
 
-        transType.value = "",
+    transType.value = "",
         description.value = "",
         amount.value = "",
         date.value = ""
@@ -123,17 +170,26 @@ const renderExpense = () => {
         transactionList.innerHTML += row;
     })
 }
-const deleteTrans = (index) => {
+
+window.deleteTrans = async (index) => {
 
     transcation.splice(index, 1);
 
-    updatesummary()
-    renderExpense()
+    try {
+        await updateDoc(docRef, {
+            transcation: transcation
+        });
+
+        updatesummary()
+        renderExpense()
+        console.log("Deleted from Firebase and UI!");
+
+    } catch (error) {
+        console.error("Delete Error:", error);
+    }
 }
 
-
-
-const editTrans = (index) => {
+window.editTrans = (index) => {
 
     addTransBtn.innerText = "Update Transaction"
 
@@ -145,9 +201,23 @@ const editTrans = (index) => {
     transType.value = item.type;
     date.value = item.transdate;
 
+    try {
+        updateDoc(docRef, {
+            transcation: transcation
+        });
+
+        updatesummary()
+        renderExpense()
+        console.log("Deleted from Firebase and UI!");
+
+    } catch (error) {
+        console.error("Delete Error:", error);
+    }
+
     updateUi()
     updatesummary()
     renderExpense()
 
 }
 
+init();
