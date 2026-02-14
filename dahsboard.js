@@ -32,8 +32,7 @@ const init = async () => {
     try { // Try block shuru
         const docSnap = await getDoc(docRef);
 
-        if (docSnap.exists()) { // exists() sahi spelling hai
-            // Yahan 'const' nahi likhna, warna ye bahar nahi jayega
+        if (docSnap.exists()) { 
             transcation = docSnap.data().transcation || [];
 
             updatesummary();
@@ -88,8 +87,7 @@ addTransBtn.addEventListener('click', () => {
         des: description.value,
         val: Number(amount.value),
         transdate: date.value
-    }
-
+    };
 
     if (editId !== null) {
         transcation[editId] = transactionData;
@@ -108,6 +106,7 @@ addTransBtn.addEventListener('click', () => {
         updateFirebase(docRef, transactionData);
         transcation.push(transactionData);
     }
+
 
     console.log("Current Array:", transcation);
 
