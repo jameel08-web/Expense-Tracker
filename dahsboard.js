@@ -32,7 +32,8 @@ const init = async () => {
     try { // Try block shuru
         const docSnap = await getDoc(docRef);
 
-        if (docSnap.exists()) { 
+        if (docSnap.exists()) { // exists() sahi spelling hai
+            // Yahan 'const' nahi likhna, warna ye bahar nahi jayega
             transcation = docSnap.data().transcation || [];
 
             updatesummary();
